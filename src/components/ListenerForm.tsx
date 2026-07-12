@@ -39,11 +39,14 @@ export default function ListenerForm({ variant, onSuccess }: ListenerFormProps) 
     suggestedJob: '',
     ageRange: '',
     interestExplanation: '',
+    willBeContacted: false,
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    const { name, value, type } = e.target as any
+    const isCheckbox = type === 'checkbox'
+    const checked = isCheckbox ? (e.target as HTMLInputElement).checked : false
+    setFormData((prev) => ({ ...prev, [name]: isCheckbox ? checked : value }))
     setError('')
   }
 
@@ -192,16 +195,25 @@ export default function ListenerForm({ variant, onSuccess }: ListenerFormProps) 
         />
       </div>
 
-      {/* Consent Checkbox */}
+      {/* Email Requirement Explanation */}
+      <div className="p-4 bg-brand-ivory border border-brand-gray rounded-lg">
+        <p className="text-sm text-brand-slate">
+          We use your email address to prevent duplicate responses and to track research progress. Your email will not be shared.
+        </p>
+      </div>
+
+      {/* Future Research Checkbox */}
       <div className="flex items-start gap-3">
         <input
           type="checkbox"
-          id="consent"
-          required
+          id="willBeContacted"
+          name="willBeContacted"
+          checked={formData.willBeContacted}
+          onChange={handleChange}
           className="w-4 h-4 mt-1 border border-brand-gray rounded focus:outline-none focus:ring-2 focus:ring-brand-ochre"
         />
-        <label htmlFor="consent" className="text-brand-slate">
-          I agree to receive occasional updates about this prospective podcast. I can unsubscribe at any time.
+        <label htmlFor="willBeContacted" className="text-brand-slate">
+          ✓ I'm willing to be contacted about future research or surveys related to this podcast concept
         </label>
       </div>
 

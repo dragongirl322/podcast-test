@@ -36,8 +36,6 @@ const SAMPLE_TOPICS = [
   'How someone becomes a museum conservator',
   'The hidden world of harbor pilots',
   'Designing and fitting artificial limbs',
-  'A day in the life of a court reporter',
-  'How a Foley artist creates the sounds we think are real',
 ]
 
 const INTERVIEW_TOPICS = [
@@ -63,14 +61,14 @@ export default function LandingPage({ variant: initialVariant }: { variant: stri
 
   return (
     <div className="min-h-screen bg-brand-ivory">
-      {/* Header */}
-      <header className="border-b border-brand-gray">
-        <nav className="mx-auto max-w-2xl px-6 py-6">
-          <div className="text-brand-navy">
-            <h1 className="font-fraunces text-lg font-bold">Podcast Research</h1>
-          </div>
-        </nav>
-      </header>
+      {/* Banner Image */}
+      <div className="w-full h-64 md:h-96 relative overflow-hidden">
+        <img
+          src="/pexels-steve-6353321.jpg"
+          alt="Banner"
+          className="w-full h-full object-cover"
+        />
+      </div>
 
       {/* Main Content */}
       <main className="mx-auto max-w-2xl px-6 py-12">
@@ -81,13 +79,6 @@ export default function LandingPage({ variant: initialVariant }: { variant: stri
           </h2>
           <p className="text-lg text-brand-slate leading-relaxed mb-8">
             {variant.description}
-          </p>
-        </section>
-
-        {/* Subheading */}
-        <section className="mb-12 pb-12 border-b border-brand-gray">
-          <p className="text-brand-slate leading-relaxed">
-            A prospective podcast about the fascinating work people do, the unexpected paths that led them there, and the honest reality of doing the job.
           </p>
         </section>
 
@@ -125,7 +116,7 @@ export default function LandingPage({ variant: initialVariant }: { variant: stri
         <section className="mb-12">
           <div className="mb-8 p-6 bg-white border border-brand-gray rounded-lg">
             <p className="text-sm text-brand-slate leading-relaxed">
-              <strong>Research disclosure:</strong> This podcast is currently an idea, not an existing show. I'm researching whether people would find it useful and entertaining before producing it. Joining the list means I may contact you with an update, a short research survey, or an invitation to hear an early episode.
+              <strong>Research disclosure:</strong> This podcast is currently an idea, not an existing show. I'm researching whether people would find it useful and entertaining before producing it.
             </p>
           </div>
 
@@ -148,9 +139,9 @@ export default function LandingPage({ variant: initialVariant }: { variant: stri
         <div className="mx-auto max-w-2xl px-6 py-8">
           <div className="flex flex-col gap-4 text-sm text-brand-slate">
             <p>
-              Questions? Email me at{' '}
-              <a href="mailto:contact@example.com" className="text-brand-ochre hover:underline">
-                contact@example.com
+              Questions? Email{' '}
+              <a href="mailto:Questions@silioerkai.resend.app" className="text-brand-ochre hover:underline">
+                Questions@silioerkai.resend.app
               </a>
             </p>
             <div className="flex gap-4">
