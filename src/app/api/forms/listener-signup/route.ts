@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/db'
 import { listenerSignupSchema } from '@/lib/validation'
 import { normalizeEmail, checkDuplicateEmail, parseVariant } from '@/lib/tracking'
+import { sendConfirmationEmail } from '@/lib/email'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
@@ -53,6 +54,16 @@ export async function POST(request: NextRequest) {
         consentAt: new Date(),
       },
     })
+
+    // Send confirmation email (fire and forget with idempotency protection)
+    const emailSent = await sendConfirmationEmail(email, signup.id)
+    if (emailSent) {
+      // Mark when the confirmation email was sent for idempotency
+      await prisma.listenerSignup.update({
+        where: { id: signup.id },
+        data: { confirmationEmailSentAt: new Date() },
+      })
+    }
 
     return NextResponse.json(
       {
