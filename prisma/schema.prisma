@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model PageVisit {
+  id            String   @id @default(cuid())
+  sessionId     String
+  variant       String
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  utmContent    String?
+  referrer      String?
+  deviceCategory String?
+  createdAt     DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([variant])
+  @@index([createdAt])
+}
+
+model ListenerSignup {
+  id                   String   @id @default(cuid())
+  email                String   @unique
+  careerStage          String
+  ageRange             String?
+  suggestedJob         String
+  interestExplanation  String?
+  variant              String
+  utmSource            String?
+  utmMedium            String?
+  utmCampaign          String?
+  utmContent           String?
+  consentAt            DateTime
+  createdAt            DateTime @default(now())
+
+  guestLeads GuestLead[]
+
+  @@index([variant])
+  @@index([createdAt])
+}
+
+model GuestLead {
+  id                String    @id @default(cuid())
+  listenerSignupId  String?
+  nominationType    String    // "self" or "referral"
+  jobTitle          String
+  description       String
+  name              String?
+  email             String?
+  linkedInUrl       String?
+  relationship      String?
+  permissionToContact Boolean
+  createdAt         DateTime  @default(now())
+
+  listenerSignup ListenerSignup? @relation(fields: [listenerSignupId], references: [id], onDelete: SetNull)
+
+  @@index([listenerSignupId])
+  @@index([jobTitle])
+  @@index([createdAt])
+}
