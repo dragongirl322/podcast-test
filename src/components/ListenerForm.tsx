@@ -117,6 +117,9 @@ export default function ListenerForm({ variant, onSuccess }: ListenerFormProps) 
           className="w-full px-4 py-2 border border-brand-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-ochre focus:border-transparent"
           placeholder="you@example.com"
         />
+        <p className="text-xs text-brand-slate mt-2">
+          We only use this to prevent duplicate entries. You won't receive emails unless you opt in below.
+        </p>
       </div>
 
       {/* Career Stage */}

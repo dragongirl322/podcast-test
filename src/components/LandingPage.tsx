@@ -15,7 +15,7 @@ const VARIANTS: Record<string, Variant> = {
     key: 'possibility',
     headline: "Your next career might be one you've never heard of.",
     description:
-      "I'm exploring a podcast about the surprising, meaningful, and sometimes unconventional jobs people do—how they found them, what the work is really like, what they love, and what they wish they had known.",
+      "I'm exploring a podcast about the surprising, meaningful, and sometimes unconventional jobs people do. How they found them, what the work is really like, what they love, and what they wish they had known.",
   },
   reality: {
     key: 'reality',
@@ -139,9 +139,8 @@ export default function LandingPage({ variant: initialVariant }: { variant: stri
         <div className="mx-auto max-w-2xl px-6 py-8">
           <div className="flex flex-col gap-4 text-sm text-brand-slate">
             <p>
-              Questions? Email{' '}
               <a href="mailto:Questions@silioerkai.resend.app" className="text-brand-ochre hover:underline">
-                Questions@silioerkai.resend.app
+                Send Email
               </a>
             </p>
             <div className="flex gap-4">
