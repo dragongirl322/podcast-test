@@ -62,7 +62,7 @@ export default function LandingPage({ variant: initialVariant }: { variant: stri
   return (
     <div className="min-h-screen bg-brand-ivory">
       {/* Banner Image */}
-      <div className="w-full h-64 md:h-96 relative overflow-hidden">
+      <div className="w-full h-32 md:h-40 relative overflow-hidden">
         <img
           src="/StockCake-Ethereal_Blue_Waves-519510-small.jpg"
           alt="Banner"
