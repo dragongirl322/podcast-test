@@ -18,21 +18,8 @@ export default function PageContent() {
       // Store session ID in cookie for duplicate detection
       document.cookie = `session_id=${sessionId}; path=/; max-age=1800`
 
-      // Create page visit record via API
-      await fetch('/api/tracking/page-visit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          sessionId,
-          variant,
-          utmSource: searchParams.get('utm_source') || null,
-          utmMedium: searchParams.get('utm_medium') || null,
-          utmCampaign: searchParams.get('utm_campaign') || null,
-          utmContent: searchParams.get('utm_content') || null,
-          referrer: document.referrer || null,
-          deviceCategory: getDeviceCategory(navigator.userAgent),
-        }),
-      }).catch((err) => console.error('Failed to track page visit:', err))
+      // TODO: Create page visit record via API (disabled until DATABASE_URL issue resolved)
+      // await fetch('/api/tracking/page-visit', {...})
 
       // Fire Meta PageView event if configured
       if (process.env.NEXT_PUBLIC_META_PIXEL_ID && typeof window !== 'undefined') {
