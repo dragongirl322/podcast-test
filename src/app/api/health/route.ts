@@ -2,10 +2,15 @@ import { prisma } from '@/lib/db'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
-  // Report env presence as booleans only — never expose the values
+  // Report env presence as booleans only — never expose the values.
+  // Also list the NAMES of injected vars (names aren't secrets) to confirm
+  // whether Railway is injecting service variables into this deployment.
   const env = {
     hasDatabaseUrl: Boolean(process.env.DATABASE_URL),
-    hasMetaPixelId: Boolean(process.env.NEXT_PUBLIC_META_PIXEL_ID),
+    databaseUrlLength: (process.env.DATABASE_URL || '').length,
+    injectedKeys: Object.keys(process.env)
+      .filter((k) => !/(SECRET|PASSWORD|KEY|TOKEN)/i.test(k))
+      .sort(),
   }
 
   try {
