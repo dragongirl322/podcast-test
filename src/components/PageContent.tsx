@@ -22,7 +22,7 @@ export default function PageContent() {
       // await fetch('/api/tracking/page-visit', {...})
 
       // Fire Meta PageView event if configured
-      const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID
+      const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || '1773569730493823'
       console.log('Meta Pixel ID:', pixelId)
 
       if (pixelId && typeof window !== 'undefined') {
