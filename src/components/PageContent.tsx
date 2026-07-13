@@ -22,17 +22,28 @@ export default function PageContent() {
       // await fetch('/api/tracking/page-visit', {...})
 
       // Fire Meta PageView event if configured
-      if (process.env.NEXT_PUBLIC_META_PIXEL_ID && typeof window !== 'undefined') {
+      const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID
+      console.log('Meta Pixel ID:', pixelId)
+
+      if (pixelId && typeof window !== 'undefined') {
+        console.log('Loading Meta pixel script...')
         // Load the Meta pixel script
         const script = document.createElement('script')
         script.async = true
         script.src = 'https://connect.facebook.net/en_US/fbevents.js'
         script.onload = () => {
+          console.log('Meta pixel script loaded, initializing fbq...')
           // Initialize Meta Pixel after script loads
-          ;(window as any).fbq('init', process.env.NEXT_PUBLIC_META_PIXEL_ID)
+          ;(window as any).fbq('init', pixelId)
           ;(window as any).fbq('track', 'PageView')
+          console.log('Meta pixel initialized and PageView tracked')
+        }
+        script.onerror = () => {
+          console.error('Failed to load Meta pixel script')
         }
         document.head.appendChild(script)
+      } else {
+        console.log('Meta pixel not configured or window not available')
       }
     }
 
