@@ -18,35 +18,23 @@ export default function PageContent() {
       // Store session ID in cookie for duplicate detection
       document.cookie = `session_id=${sessionId}; path=/; max-age=1800`
 
-      // TODO: Create page visit record via API (disabled until DATABASE_URL issue resolved)
-      // await fetch('/api/tracking/page-visit', {...})
-
-      // Fire Meta PageView event if configured
-      const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || '1773569730493823'
-      console.log('Meta Pixel ID:', pixelId)
-
-      if (pixelId && typeof window !== 'undefined' && !(window as any).fbq) {
-        console.log('Loading Meta pixel script...')
-
-        // Load the Meta pixel script - it will initialize itself
-        const script = document.createElement('script')
-        script.async = true
-        script.innerHTML = `
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '${pixelId}');
-          fbq('track', 'PageView');
-        `
-        document.head.appendChild(script)
-        console.log('Meta pixel initialized')
-      } else {
-        console.log('Meta pixel already loaded or not configured')
+      try {
+        await fetch('/api/tracking/page-visit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionId,
+            variant,
+            utmSource: searchParams.get('utm_source'),
+            utmMedium: searchParams.get('utm_medium'),
+            utmCampaign: searchParams.get('utm_campaign'),
+            utmContent: searchParams.get('utm_content'),
+            referrer: document.referrer || null,
+            deviceCategory: getDeviceCategory(navigator.userAgent),
+          }),
+        })
+      } catch {
+        // Non-blocking: page still renders if tracking fails
       }
     }
 
