@@ -64,7 +64,7 @@ export default function LandingPage({ variant: initialVariant }: { variant: stri
       {/* Banner Image */}
       <div className="w-full h-64 md:h-96 relative overflow-hidden">
         <img
-          src="/pexels-thefullonmonet-28379844.jpg"
+          src="/StockCake-Ethereal_Blue_Waves-519510-small.jpg"
           alt="Banner"
           className="w-full h-full object-cover"
         />
