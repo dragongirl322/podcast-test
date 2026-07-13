@@ -32,21 +32,15 @@ export default function PageContent() {
 
       // Fire Meta PageView event if configured
       if (process.env.NEXT_PUBLIC_META_PIXEL_ID && typeof window !== 'undefined') {
-        // Initialize Meta Pixel
-        ;(window as any).fbq =
-          (window as any).fbq ||
-          function () {
-            ;((window as any).fbq.callQueue = (window as any).fbq.callQueue || []).push(
-              arguments
-            )
-          }
-        ;(window as any).fbq('init', process.env.NEXT_PUBLIC_META_PIXEL_ID)
-        ;(window as any).fbq('track', 'PageView')
-
-        // Load the actual pixel script
+        // Load the Meta pixel script
         const script = document.createElement('script')
         script.async = true
         script.src = 'https://connect.facebook.net/en_US/fbevents.js'
+        script.onload = () => {
+          // Initialize Meta Pixel after script loads
+          ;(window as any).fbq('init', process.env.NEXT_PUBLIC_META_PIXEL_ID)
+          ;(window as any).fbq('track', 'PageView')
+        }
         document.head.appendChild(script)
       }
     }
