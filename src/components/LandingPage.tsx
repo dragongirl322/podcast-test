@@ -143,14 +143,6 @@ export default function LandingPage({ variant: initialVariant }: { variant: stri
                 Send Email
               </a>
             </p>
-            <div className="flex gap-4">
-              <a href="/privacy" className="text-brand-ochre hover:underline">
-                Privacy
-              </a>
-              <a href="/terms" className="text-brand-ochre hover:underline">
-                Terms
-              </a>
-            </div>
           </div>
         </div>
       </footer>
