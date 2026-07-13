@@ -8,6 +8,8 @@ export async function GET() {
   const env = {
     hasDatabaseUrl: Boolean(process.env.DATABASE_URL),
     databaseUrlLength: (process.env.DATABASE_URL || '').length,
+    deployedService: process.env.RAILWAY_SERVICE_NAME || null,
+    deployedEnvironment: process.env.RAILWAY_ENVIRONMENT_NAME || null,
     injectedKeys: Object.keys(process.env)
       .filter((k) => !/(SECRET|PASSWORD|KEY|TOKEN)/i.test(k))
       .sort(),
