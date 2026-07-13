@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import LandingPage from '@/components/LandingPage'
-import { generateSessionId, parseVariant, getDeviceCategory } from '@/lib/tracking'
+import { generateSessionId, parseVariant, getDeviceCategory } from '@/lib/utils'
 
 export default function PageContent() {
   const searchParams = useSearchParams()

@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/db'
 import { listenerSignupSchema } from '@/lib/validation'
-import { normalizeEmail, checkDuplicateEmail, parseVariant } from '@/lib/tracking'
+import { normalizeEmail, parseVariant } from '@/lib/utils'
+import { checkDuplicateEmail } from '@/lib/tracking'
 import { sendConfirmationEmail } from '@/lib/email'
 import { NextRequest, NextResponse } from 'next/server'
 
