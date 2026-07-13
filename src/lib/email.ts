@@ -10,7 +10,7 @@ export async function sendConfirmationEmail(email: string, signupId: string): Pr
     const resend = new Resend(process.env.RESEND_API_KEY)
     const unsubscribeUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://example.com'}/unsubscribe?id=${signupId}`
 
-    await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: process.env.EMAIL_FROM,
       to: email,
       subject: 'Welcome to the podcast research',
@@ -51,6 +51,12 @@ export async function sendConfirmationEmail(email: string, signupId: string): Pr
       `,
     })
 
+    if (error) {
+      console.error('Resend rejected confirmation email:', error)
+      return false
+    }
+
+    console.log('Confirmation email sent:', data?.id)
     return true
   } catch (error) {
     console.error('Failed to send confirmation email:', error)
