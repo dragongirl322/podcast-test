@@ -26,18 +26,25 @@ export default function PageContent() {
       console.log('Meta Pixel ID:', pixelId)
 
       if (pixelId && typeof window !== 'undefined') {
-        console.log('Loading Meta pixel script...')
+        console.log('Setting up Meta pixel...')
+
+        // Create fbq stub/queue before loading script
+        ;(window as any).fbq = (window as any).fbq || function () {
+          ;((window as any).fbq.callQueue = (window as any).fbq.callQueue || []).push(arguments)
+        }
+        ;(window as any).fbq.callQueue = (window as any).fbq.callQueue || []
+        ;(window as any).fbq.loaded = true
+        ;(window as any).fbq.version = '2.0'
+
+        // Queue init and track calls
+        ;(window as any).fbq('init', pixelId)
+        ;(window as any).fbq('track', 'PageView')
+        console.log('fbq queued, loading script...')
+
         // Load the Meta pixel script
         const script = document.createElement('script')
         script.async = true
         script.src = 'https://connect.facebook.net/en_US/fbevents.js'
-        script.onload = () => {
-          console.log('Meta pixel script loaded, initializing fbq...')
-          // Initialize Meta Pixel after script loads
-          ;(window as any).fbq('init', pixelId)
-          ;(window as any).fbq('track', 'PageView')
-          console.log('Meta pixel initialized and PageView tracked')
-        }
         script.onerror = () => {
           console.error('Failed to load Meta pixel script')
         }
