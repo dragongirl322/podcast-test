@@ -25,32 +25,28 @@ export default function PageContent() {
       const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || '1773569730493823'
       console.log('Meta Pixel ID:', pixelId)
 
-      if (pixelId && typeof window !== 'undefined') {
-        console.log('Setting up Meta pixel...')
+      if (pixelId && typeof window !== 'undefined' && !(window as any).fbq) {
+        console.log('Loading Meta pixel script...')
 
-        // Create fbq stub/queue before loading script
-        ;(window as any).fbq = (window as any).fbq || function () {
-          ;((window as any).fbq.callQueue = (window as any).fbq.callQueue || []).push(arguments)
-        }
-        ;(window as any).fbq.callQueue = (window as any).fbq.callQueue || []
-        ;(window as any).fbq.loaded = true
-        ;(window as any).fbq.version = '2.0'
-
-        // Queue init and track calls
-        ;(window as any).fbq('init', pixelId)
-        ;(window as any).fbq('track', 'PageView')
-        console.log('fbq queued, loading script...')
-
-        // Load the Meta pixel script
+        // Load the Meta pixel script - it will initialize itself
         const script = document.createElement('script')
         script.async = true
-        script.src = 'https://connect.facebook.net/en_US/fbevents.js'
-        script.onerror = () => {
-          console.error('Failed to load Meta pixel script')
-        }
+        script.innerHTML = `
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '${pixelId}');
+          fbq('track', 'PageView');
+        `
         document.head.appendChild(script)
+        console.log('Meta pixel initialized')
       } else {
-        console.log('Meta pixel not configured or window not available')
+        console.log('Meta pixel already loaded or not configured')
       }
     }
 
