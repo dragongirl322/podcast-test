@@ -17,6 +17,7 @@ interface DashboardData {
   topJobs: Array<{ job: string; count: number }>
   guestLeadCount: number
   recentResponses: Array<{ email: string; job: string; explanation?: string; createdAt: string }>
+  dataCutoff: string
 }
 
 export default function ResultsPage() {

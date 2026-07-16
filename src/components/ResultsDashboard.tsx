@@ -15,6 +15,7 @@ interface DashboardData {
   topJobs: Array<{ job: string; count: number }>
   guestLeadCount: number
   recentResponses: Array<{ email: string; job: string; explanation?: string; createdAt: string }>
+  dataCutoff: string
 }
 
 interface ResultsDashboardProps {
@@ -43,6 +44,16 @@ export default function ResultsDashboard({ data }: ResultsDashboardProps) {
 
   return (
     <div className="space-y-8">
+      <p className="text-sm text-brand-slate">
+        Counting activity from{' '}
+        {new Date(data.dataCutoff).toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}{' '}
+        onward. Earlier pre-launch test records are excluded.
+      </p>
+
       {/* Key Metrics */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="p-6 bg-white border border-brand-gray rounded-lg">

@@ -1,6 +1,11 @@
 import { prisma } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 
+// Manual end-to-end testing against the production database ran on 2026-07-13.
+// Those rows are real database records with nothing to distinguish them from real
+// traffic except their date, so the dashboard counts only what came after them.
+const DATA_CUTOFF = new Date('2026-07-14T00:00:00Z')
+
 export async function GET(request: NextRequest) {
   try {
     // Check auth token (simple check)
@@ -11,9 +16,14 @@ export async function GET(request: NextRequest) {
 
     // Fetch all data
     const [visits, signups, guestLeads] = await Promise.all([
-      prisma.pageVisit.findMany(),
-      prisma.listenerSignup.findMany(),
+      prisma.pageVisit.findMany({
+        where: { createdAt: { gte: DATA_CUTOFF } },
+      }),
+      prisma.listenerSignup.findMany({
+        where: { createdAt: { gte: DATA_CUTOFF } },
+      }),
       prisma.guestLead.findMany({
+        where: { createdAt: { gte: DATA_CUTOFF } },
         orderBy: { createdAt: 'desc' },
         take: 50,
       }),
@@ -89,6 +99,7 @@ export async function GET(request: NextRequest) {
       topJobs,
       guestLeadCount: guestLeads.length,
       recentResponses,
+      dataCutoff: DATA_CUTOFF.toISOString(),
     })
   } catch (error) {
     console.error('Dashboard error:', error)
