@@ -38,6 +38,7 @@ model ListenerSignup {
   utmContent           String?
   consentAt            DateTime
   confirmationEmailSentAt DateTime?
+  unsubscribedAt       DateTime?
   createdAt            DateTime @default(now())
 
   guestLeads GuestLead[]

@@ -27,7 +27,15 @@ export default function ResultsDashboard({ data }: ResultsDashboardProps) {
 
   const handleCSVExport = async (type: 'signups' | 'leads' | 'summary') => {
     try {
-      const response = await fetch(`/api/admin/export?type=${type}`)
+      const response = await fetch(`/api/admin/export?type=${type}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('results_auth') ?? ''}` },
+      })
+
+      if (response.status === 401) {
+        alert('Your session has expired. Please reload the page and log in again.')
+        return
+      }
+
       const blob = await response.blob()
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')

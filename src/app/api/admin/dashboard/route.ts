@@ -1,3 +1,4 @@
+import { verifyAuthHeader } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -8,24 +9,20 @@ const DATA_CUTOFF = new Date('2026-07-14T00:00:00Z')
 
 export async function GET(request: NextRequest) {
   try {
-    // Check auth token (simple check)
-    const auth = request.headers.get('authorization')
-    if (!auth?.startsWith('Bearer ')) {
+    if (!verifyAuthHeader(request.headers.get('authorization'))) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     // Fetch all data
-    const [visits, signups, guestLeads] = await Promise.all([
+    const [visits, signups, guestLeadCount] = await Promise.all([
       prisma.pageVisit.findMany({
         where: { createdAt: { gte: DATA_CUTOFF } },
       }),
       prisma.listenerSignup.findMany({
         where: { createdAt: { gte: DATA_CUTOFF } },
       }),
-      prisma.guestLead.findMany({
+      prisma.guestLead.count({
         where: { createdAt: { gte: DATA_CUTOFF } },
-        orderBy: { createdAt: 'desc' },
-        take: 50,
       }),
     ])
 
@@ -97,7 +94,7 @@ export async function GET(request: NextRequest) {
       careerStages,
       ageRanges,
       topJobs,
-      guestLeadCount: guestLeads.length,
+      guestLeadCount,
       recentResponses,
       dataCutoff: DATA_CUTOFF.toISOString(),
     })

@@ -1,3 +1,4 @@
+import { verifyAuthHeader } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -24,6 +25,7 @@ function generateSignupsCSV(signups: any[]): string {
     'UTM Content',
     'Consent Date',
     'Created At',
+    'Unsubscribed At',
   ]
 
   const rows = signups.map((s) => [
@@ -39,6 +41,7 @@ function generateSignupsCSV(signups: any[]): string {
     escapeCSV(s.utmContent),
     escapeCSV(s.consentAt.toISOString()),
     escapeCSV(s.createdAt.toISOString()),
+    escapeCSV(s.unsubscribedAt ? s.unsubscribedAt.toISOString() : ''),
   ])
 
   return [headers.join(','), ...rows.map((r) => r.join(','))].join('\n')
@@ -100,6 +103,10 @@ function generateSummaryCSV(visits: any[], signups: any[]): string {
 
 export async function GET(request: NextRequest) {
   try {
+    if (!verifyAuthHeader(request.headers.get('authorization'))) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     const type = request.nextUrl.searchParams.get('type') || 'summary'
 
     const [visits, signups, leads] = await Promise.all([

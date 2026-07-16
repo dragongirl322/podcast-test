@@ -1,4 +1,4 @@
-import { verifyResultsPassword } from '@/lib/auth'
+import { createSessionToken, verifyResultsPassword } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
@@ -19,10 +19,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Simple token (in production, use JWT)
-    const token = Buffer.from(`auth:${Date.now()}`).toString('base64')
-
-    return NextResponse.json({ token })
+    return NextResponse.json({ token: createSessionToken() })
   } catch (error) {
     console.error('Auth error:', error)
     return NextResponse.json(
