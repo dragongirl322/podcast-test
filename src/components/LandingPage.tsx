@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import ListenerForm from './ListenerForm'
 import GuestLeadPrompt from './GuestLeadPrompt'
 
@@ -138,10 +139,13 @@ export default function LandingPage({ variant: initialVariant }: { variant: stri
       <footer className="border-t border-brand-gray bg-white">
         <div className="mx-auto max-w-2xl px-6 py-8">
           <div className="flex flex-col gap-4 text-sm text-brand-slate">
-            <p>
-              <a href="mailto:Questions@silioerkai.resend.app" className="text-brand-ochre hover:underline">
+            <p className="flex gap-4">
+              <a href="mailto:Noreply@podcast.3tinteractive.com" className="text-brand-ochre hover:underline">
                 Send Email
               </a>
+              <Link href="/privacy" className="text-brand-ochre hover:underline">
+                Privacy
+              </Link>
             </p>
           </div>
         </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { CAREER_STAGES, AGE_RANGES } from '@/lib/validation'
 
 const CAREER_STAGE_LABELS: Record<string, string> = {
@@ -228,6 +229,14 @@ export default function ListenerForm({ variant, onSuccess }: ListenerFormProps) 
       >
         {isLoading ? 'Submitting...' : 'Help shape the podcast'}
       </button>
+
+      <p className="text-sm text-brand-slate text-center">
+        See how we use your information in our{' '}
+        <Link href="/privacy" className="text-brand-ochre hover:underline">
+          privacy notice
+        </Link>
+        .
+      </p>
     </form>
   )
 }
